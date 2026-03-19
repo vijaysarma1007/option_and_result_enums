@@ -1,3 +1,5 @@
+use std::fmt::Result;
+
 fn main() {
     let muscial_instruments = [
         String::from("Guitar"),
@@ -37,6 +39,62 @@ fn main() {
 
     println!("unwarap or : {}", present_value.unwrap_or(0));
     println!("unwarap or : {}", missing_value.unwrap_or(0));
+
+    let ok = Ok::<i32, &str>(5);
+    let disaster = Err::<i32, &str>("something went wrong!");
+
+    println!("{:?}", ok);
+    println!("{:?}", disaster);
+
+    let text = "50";
+    let text_number = text.parse::<i32>();
+    println!("text as number: {:?}", text_number);
+
+    let result = divide(10.0, 2.0);
+
+    println!("{}", result.is_ok());
+    println!("{}", result.is_err());
+
+    println!("{}", result.as_ref().unwrap());
+    println!(
+        "{}",
+        result.as_ref().expect("Unabvle to parse calculation.")
+    );
+    println!("{}", result.unwrap_or(5.0));
+
+    // match result {
+    //     Ok(calculation) => println!("Result: {}", calculation),
+    //     Err(message) => println!("Error: {}", message),
+    // }
+
+    let my_result = operation(true);
+
+    let content = match my_result {
+        Ok(message) => message,
+        Err(error) => error.to_string(),
+    };
+
+    let mut sauces = vec!["Mayonaise", "Ketchup", "Ranch"];
+
+    while let Some(sauce) = sauces.pop() {
+        println!("The next sauce is {sauce}");
+    }
+}
+
+fn operation(great_success: bool) -> std::result::Result<String, &'static str> {
+    if great_success {
+        Ok("Success".to_string())
+    } else {
+        Err("error")
+    }
+}
+
+fn divide(numerator: f64, denominator: f64) -> std::result::Result<f64, String> {
+    if denominator == 0.0 {
+        Err("Cannot divide by zero".to_string())
+    } else {
+        Ok(numerator / denominator)
+    }
 }
 
 fn is_item_in_stock(item_is_in_system: bool, item_is_in_stock: bool) -> Option<bool> {
